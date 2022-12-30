@@ -1,3 +1,7 @@
 *
 !.gitignore
+!AdaCredit/
+!AdaCredit/AdaCredit.cs
+!AdaCredit/AdaCredit.csproj
+!Makefile
 !README.txt
