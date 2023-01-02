@@ -3,5 +3,8 @@
 !AdaCredit/
 !AdaCredit/AdaCredit.cs
 !AdaCredit/AdaCredit.csproj
+!AdaCredit/Client.cs
+!AdaCredit/DatabaseClient.cs
+!AdaCredit/Employee.cs
 !Makefile
 !README.txt
