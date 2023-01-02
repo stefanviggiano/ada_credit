@@ -31,7 +31,8 @@ namespace AdaCredit
 
         private List<Employee> GetEmployessFromCSV()
         {
-            return default;
+            var employees = new List<Employee>();
+            return employees;
         }
     }
 }
