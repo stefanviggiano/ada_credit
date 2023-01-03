@@ -2,17 +2,18 @@ namespace AdaCredit
 {
     public class Employee
     {
-        public string Name;
-        public string Login;
-        public string Password;
-        public DateTime LastLogin;
-        public bool Active;
+        public string Name { get; set; }
+        public string Login { get; set; }
+        public string Password { get ; set; }
+        public DateTime LastLogin { get; set; }
+        public bool Active { get; set; }
 
-        public Employee(string name, string login, string password)
+        public Employee(string Name, string Login, string Password)
         {
-            this.Name = name;
-            this.Login = login;
-            this.Password = password;
+            this.Name = Name;
+            this.Login = Login;
+            this.Password = Password;
+            this.Active = true;
         }
 
         public bool CheckIdentity(string login, string password)

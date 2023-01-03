@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,13 @@ namespace AdaCredit
 
         public static void Main()
         {
-            var DatabaseClient = new DatabaseClient();
+            var baseDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            string DatabaseDirPath = baseDir.Parent.Parent.Parent.FullName;
+
+            var DatabaseClient = new DatabaseClient(
+                    Path.Combine(DatabaseDirPath, "clients.csv"),
+                    Path.Combine(DatabaseDirPath, "employees.csv"));
+
             var app = new AdaCreditApp(DatabaseClient);
             app.MainLoop();
         }
@@ -51,7 +58,6 @@ namespace AdaCredit
 
             List<Employee> employees = this.DatabaseClient.Employees;
 
-            Console.WriteLine(login, password);
             if (employees.Count == 0 && login == "user"
                 && password == "pass")
             {
@@ -83,6 +89,7 @@ namespace AdaCredit
 
             var employee = new Employee(name, login, password);
             this.DatabaseClient.Employees.Add(employee);
+            this.DatabaseClient.SaveEmployees();
             Console.WriteLine("Employee created");
 
             return "Login";
@@ -91,21 +98,23 @@ namespace AdaCredit
         public string MainMenu()
         {
             Console.WriteLine("MAIN MENU");
-            Console.WriteLine("Choose one of the options:");
+            Console.WriteLine("Choose a sub menu:");
             Console.WriteLine("1 - Clients");
             Console.WriteLine("2 - Employees");
             Console.WriteLine("3 - Transactions");
             Console.WriteLine("4 - Reports");
+            Console.WriteLine("5 - Exit");
             string option = Console.ReadLine();
-            string next_window = option switch
+            string nextWindow = option switch
             {
                 "1" => "ClientsMenu",
                 "2" => "EmployeesMenu",
                 "3" => "TransactionsMenu",
                 "4" => "ReportsMenu",
+                "5" => "Exit",
                 _ => "MainMenu"
             };
-            return next_window;
+            return nextWindow;
         }
     }
 }

@@ -2,8 +2,8 @@ namespace AdaCredit
 {
     public class Client
     {
-        public string Name;
-        public int AccountNumber;
-        public int AgencyNumber;
+        public string Name { get; set; }
+        public int AccountNumber { get; set; }
+        public int AgencyNumber { get; set; }
     }
 }

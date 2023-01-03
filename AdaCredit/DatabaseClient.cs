@@ -1,14 +1,20 @@
+using System.Globalization;
+using CsvHelper;
+
+
 namespace AdaCredit
 {
     public class DatabaseClient
     {
+        private string ClientsFilePath;
+        private string EmployeesFilePath;
         private List<Client>? clients;
         public List<Client> Clients
         {
             get
             {
                 if (this.clients == null)
-                    this.clients = this.GetClientsFromCSV();
+                    this.clients = this.LoadClients();
                 return this.clients;
             }
         }
@@ -19,20 +25,49 @@ namespace AdaCredit
             get
             {
                 if (this.employees == null)
-                    this.employees = this.GetEmployessFromCSV();
+                    this.employees = this.LoadEmployees();
                 return this.employees;
             }
         }
 
-        private List<Client> GetClientsFromCSV()
+        public DatabaseClient(string clientsFilePath, string employeesFilePath)
         {
-            return default;
+            this.ClientsFilePath = clientsFilePath;
+            this.EmployeesFilePath = employeesFilePath;
         }
 
-        private List<Employee> GetEmployessFromCSV()
+        private List<Client> LoadClients()
         {
-            var employees = new List<Employee>();
-            return employees;
+            if (!File.Exists(this.ClientsFilePath))
+                return new List<Client>();
+
+            using var reader = new StreamReader(ClientsFilePath);
+            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            return csv.GetRecords<Client>().ToList();
+        }
+
+        private List<Employee> LoadEmployees()
+        {
+            if (!File.Exists(this.EmployeesFilePath))
+                return new List<Employee>();
+
+            using var reader = new StreamReader(EmployeesFilePath);
+            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            return csv.GetRecords<Employee>().ToList();
+        }
+
+        public void SaveClients()
+        {
+            using var writer = new StreamWriter(this.ClientsFilePath);
+            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            csv.WriteRecords(this.Clients);
+        }
+
+        public void SaveEmployees()
+        {
+            using var writer = new StreamWriter(this.EmployeesFilePath);
+            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            csv.WriteRecords(this.Employees);
         }
     }
 }
