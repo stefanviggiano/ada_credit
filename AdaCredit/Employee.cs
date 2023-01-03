@@ -16,10 +16,13 @@ namespace AdaCredit
             this.Active = true;
         }
 
-        public bool CheckIdentity(string login, string password)
+        public bool Login(string login, string password)
         {
             if (login == this.Login && password == this.Password)
+            {
+                this.LastLogin = DateTime.Now;
                 return true;
+            }
             return false;
         }
     }

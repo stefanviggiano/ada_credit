@@ -66,7 +66,8 @@ namespace AdaCredit
 
             foreach (Employee employee in employees)
             {
-                if (employee.CheckIdentity(login, password))
+                if (employee.Login(login, password))
+                    employee.
                     return "MainMenu";
             }
 
