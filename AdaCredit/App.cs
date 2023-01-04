@@ -38,6 +38,7 @@ namespace AdaCredit
                     "CreateClient" => this.CreateClient(),
                     "ConsultClient" => this.ConsultClient(),
                     "EditClient" => this.EditClient(),
+                    "DeactivateClient" => this.DeactivateClient(),
                     "MainMenu" => this.MainMenu(),
                     "GoBack" => previous,
                     _ => "Exit"
@@ -148,6 +149,25 @@ namespace AdaCredit
                     client.PhoneNumber = phoneNumber;
                     Console.WriteLine("Client edited");
                 }
+            }
+            return "GoBack";
+        }
+
+        public string DeactivateClient()
+        {
+            Console.WriteLine("DEACTIVATE CLIENT");
+            Console.Write("Client's name: ");
+            string name = Console.ReadLine();
+
+            client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
+            if (client == null)
+            {
+                Console.WriteLine($"No client found with name {name}");
+            }
+            else
+            {
+                client.active = false;
+                Console.Write("Client deactivated");
             }
             return "GoBack";
         }
