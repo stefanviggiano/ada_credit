@@ -36,6 +36,8 @@ namespace AdaCredit
                     "Login" => this.Login(),
                     "CreateEmployee" => this.CreateEmployee(),
                     "CreateClient" => this.CreateClient(),
+                    "ConsultClient" => this.ConsultClient(),
+                    "EditClient" => this.EditClient(),
                     "MainMenu" => this.MainMenu(),
                     "GoBack" => previous,
                     _ => "Exit"
@@ -93,12 +95,15 @@ namespace AdaCredit
                     this.AgencyNumber);
 
             if (this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name) != null)
+            {
                 Console.WriteLine("Client with the specified name already exists");
                 return "CreateClient";
+            }
 
             this.DatabaseClient.Clients.Add(client);
             return "GoBack";
         }
+
 
         public string ConsultClient()
         {
@@ -112,6 +117,39 @@ namespace AdaCredit
             else
                 Console.WriteLine(client);
             return "Go Back";
+        }
+
+
+        public string EditClient()
+        {
+            Console.WriteLine("EDIT CLIENT");
+            Console.Write("Client's name: ");
+            string name = Console.ReadLine();
+
+            client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
+            if (client == null)
+            {
+                Console.WriteLine($"No client found with name {name}");
+            }
+            else
+            {
+                Console.Write(client);
+                Console.Write("New name: ");
+                string name = Console.ReadLine();
+
+                Console.Write("New phone number: ");
+                string phoneNumber = Console.ReadLine();
+
+                if (this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name) != null)
+                    Console.WriteLine("Client with the specified name already exists");
+                else
+                {
+                    client.Name = name;
+                    client.PhoneNumber = phoneNumber;
+                    Console.WriteLine("Client edited");
+                }
+            }
+            return "GoBack";
         }
 
 
