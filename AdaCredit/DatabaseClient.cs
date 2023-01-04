@@ -8,6 +8,7 @@ namespace AdaCredit
     {
         private string ClientsFilePath;
         private string EmployeesFilePath;
+
         private List<Client>? clients;
         public List<Client> Clients
         {
@@ -68,6 +69,12 @@ namespace AdaCredit
             using var writer = new StreamWriter(this.EmployeesFilePath);
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
             csv.WriteRecords(this.Employees);
+        }
+
+        public void Save()
+        {
+            this.SaveClients();
+            this.SaveEmployees();
         }
     }
 }

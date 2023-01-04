@@ -3,8 +3,10 @@
 !AdaCredit/
 !AdaCredit/AdaCredit.cs
 !AdaCredit/AdaCredit.csproj
+!AdaCredit/App.cs
 !AdaCredit/Client.cs
 !AdaCredit/DatabaseClient.cs
 !AdaCredit/Employee.cs
 !AdaCredit/Makefile
+!AdaCredit/Utils.cs
 !README.txt

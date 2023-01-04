@@ -3,7 +3,17 @@ namespace AdaCredit
     public class Client
     {
         public string Name { get; set; }
-        public int AccountNumber { get; set; }
-        public int AgencyNumber { get; set; }
+        public string PhoneNumber { get; set; }
+        public string AccountNumber { get; set; }
+        public string AgencyNumber { get; set; }
+
+        public Client(string Name, string PhoneNumber, string AccountNumber,
+                string AgencyNumber)
+        {
+            this.Name = Name;
+            this.PhoneNumber = PhoneNumber;
+            this.AccountNumber = AccountNumber;
+            this.AgencyNumber = AgencyNumber;
+        }
     }
 }
