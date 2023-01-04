@@ -35,6 +35,7 @@ namespace AdaCredit
                 {
                     "Login" => this.Login(),
                     "CreateEmployee" => this.CreateEmployee(),
+                    "CreateClient" => this.CreateClient(),
                     "MainMenu" => this.MainMenu(),
                     "GoBack" => previous,
                     _ => "Exit"
@@ -51,7 +52,7 @@ namespace AdaCredit
 
         public string Login()
         {
-            Console.WriteLine("LOGIN")
+            Console.WriteLine("LOGIN");
             Console.Write("Username: ");
             string username = Console.ReadLine();
             Console.Write("Password: ");
@@ -86,19 +87,31 @@ namespace AdaCredit
             Console.Write("Phone number: ");
             string phoneNumber = Console.ReadLine();
 
-            string accountNumber;
-            while (true)
-            {
-                accountNumber = Utils.RandomString(6, "0123456789");
-                if (this.DatabaseClient.Clients.FirstOrDefault(
-                        x => x.AccountNumber == accountNumber) == null)
-                    break;
-            }
+            string accountNumber = Utils.GenerateNewAccountNumber(this.DatabaseClient);
 
             var client = new Client(name, phoneNumber, accountNumber,
                     this.AgencyNumber);
+
+            if (this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name) != null)
+                Console.WriteLine("Client with the specified name already exists");
+                return "CreateClient";
+
             this.DatabaseClient.Clients.Add(client);
             return "GoBack";
+        }
+
+        public string ConsultClient()
+        {
+            Console.WriteLine("CONSULT CLIENT");
+            Console.Write("Client's name: ");
+            string name = Console.ReadLine();
+
+            client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
+            if (client == null)
+                Console.WriteLine($"No client found with name {name}");
+            else
+                Console.WriteLine(client);
+            return "Go Back";
         }
 
 

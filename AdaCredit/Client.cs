@@ -15,5 +15,10 @@ namespace AdaCredit
             this.AccountNumber = AccountNumber;
             this.AgencyNumber = AgencyNumber;
         }
+
+        public ToString()
+        {
+            return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber}");
+        }
     }
 }
