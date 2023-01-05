@@ -17,6 +17,16 @@ namespace AdaCredit
             this.AgencyNumber = AgencyNumber;
         }
 
+        public Client(string Name, string PhoneNumber, string AccountNumber,
+                string AgencyNumber, bool Active)
+        {
+            this.Name = Name;
+            this.PhoneNumber = PhoneNumber;
+            this.AccountNumber = AccountNumber;
+            this.AgencyNumber = AgencyNumber;
+            this.Active = Active;
+        }
+
         public string ToString()
         {
             return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber})";
