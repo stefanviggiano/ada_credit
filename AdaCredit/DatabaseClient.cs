@@ -59,16 +59,22 @@ namespace AdaCredit
 
         public void SaveClients()
         {
-            using var writer = new StreamWriter(this.ClientsFilePath);
-            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-            csv.WriteRecords(this.Clients);
+            if (this.clients != null)
+            {
+                using var writer = new StreamWriter(this.ClientsFilePath);
+                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                csv.WriteRecords(this.Clients);
+            }
         }
 
         public void SaveEmployees()
         {
-            using var writer = new StreamWriter(this.EmployeesFilePath);
-            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-            csv.WriteRecords(this.Employees);
+            if (this.employees != null)
+            {
+                using var writer = new StreamWriter(this.EmployeesFilePath);
+                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                csv.WriteRecords(this.Employees);
+            }
         }
 
         public void Save()
