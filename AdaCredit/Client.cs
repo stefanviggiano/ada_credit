@@ -27,7 +27,7 @@ namespace AdaCredit
             this.Active = Active;
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber})";
         }
