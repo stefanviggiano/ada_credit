@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using System.IO;
 using CsvHelper;
 
 
@@ -8,6 +10,31 @@ namespace AdaCredit
     {
         private string ClientsFilePath;
         private string EmployeesFilePath;
+        private string TransactionsDirPath;
+
+        private string CompletedTransactionsDirPath
+        {
+            get
+            {
+                return Path.Combine(this.TransactionsDirPath, "Completed");
+            }
+        }
+
+        private string FailedTransactionsDirPath
+        {
+            get
+            {
+                return Path.Combine(this.TransactionsDirPath, "Failed");
+            }
+        }
+
+        private string PendingTransactionsDirPath
+        {
+            get
+            {
+                return Path.Combine(this.TransactionsDirPath, "Pending");
+            }
+        }
 
         private List<Client>? clients;
         public List<Client> Clients
@@ -31,10 +58,12 @@ namespace AdaCredit
             }
         }
 
-        public DatabaseClient(string clientsFilePath, string employeesFilePath)
+        public DatabaseClient(string clientsFilePath, string employeesFilePath,
+                string transactionsDirPath);
         {
             this.ClientsFilePath = clientsFilePath;
             this.EmployeesFilePath = employeesFilePath;
+            this.TransactionsDirPath = transactionsDirPath;
         }
 
         private List<Client> LoadClients()

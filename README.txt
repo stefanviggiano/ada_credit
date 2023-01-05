@@ -100,13 +100,16 @@ milhar
 
 Obs: TEFs só podem ser realizadas entre clientes do mesmo banco.
 
-ANEXO B - Tabelas de Tarifas Transações a Crédito Todas isentas de Tarifas
+ANEXO B - Tabelas de Tarifas
+
+Transações a Crédito Todas isentas de Tarifas
 
 Transações a Débito realizadas/recebidas até 30/11/2022 Todas isentas de
 Tarifas
 
 Transações a Débito realizadas/recebidas a partir de 01/12/2022 TED - Tarifa
-Única de R$5,00 DOC - Tarifa de R$1,00 + (1% da Transação limitado a R$5,00)
+Única de R$5,00
+DOC - Tarifa de R$1,00 + (1% da Transação limitado a R$5,00)
 TEF - Isenta
 
 ANEXO C - Salt (Salto) Um salt é, basicamente, uma cadeia de caracteres

@@ -12,12 +12,16 @@ namespace AdaCredit
     {
         public static void Main()
         {
-            var baseDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-            string DatabaseDirPath = baseDir.Parent.Parent.Parent.FullName;
+
+            string desktopPath = Environment.GetFolderPath(
+                    Environment.SpecialFolder.Desktop);
+            var baseExecDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            string DatabaseDirPath = baseExecDir.Parent.Parent.Parent.FullName;
 
             var databaseClient = new DatabaseClient(
                     Path.Combine(DatabaseDirPath, "clients.csv"),
-                    Path.Combine(DatabaseDirPath, "employees.csv"));
+                    Path.Combine(DatabaseDirPath, "employees.csv"),
+                    Path.Combine(desktopPath, "Transactions"));
 
             var agencyNumber = "0001";
             var app = new App(databaseClient, agencyNumber);
