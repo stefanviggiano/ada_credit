@@ -6,6 +6,7 @@ namespace AdaCredit
         public string PhoneNumber { get; set; }
         public string AccountNumber { get; set; }
         public string AgencyNumber { get; set; }
+        public bool Active { get; set; }
 
         public Client(string Name, string PhoneNumber, string AccountNumber,
                 string AgencyNumber)
@@ -16,9 +17,9 @@ namespace AdaCredit
             this.AgencyNumber = AgencyNumber;
         }
 
-        public ToString()
+        public string ToString()
         {
-            return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber}");
+            return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber})";
         }
     }
 }

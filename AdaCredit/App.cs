@@ -40,6 +40,7 @@ namespace AdaCredit
                     "EditClient" => this.EditClient(),
                     "DeactivateClient" => this.DeactivateClient(),
                     "MainMenu" => this.MainMenu(),
+                    "ClientsMenu" => this.ClientsMenu(),
                     "GoBack" => previous,
                     _ => "Exit"
                 };
@@ -96,12 +97,9 @@ namespace AdaCredit
                     this.AgencyNumber);
 
             if (this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name) != null)
-            {
                 Console.WriteLine("Client with the specified name already exists");
-                return "CreateClient";
-            }
-
-            this.DatabaseClient.Clients.Add(client);
+            else
+                this.DatabaseClient.Clients.Add(client);
             return "GoBack";
         }
 
@@ -112,12 +110,12 @@ namespace AdaCredit
             Console.Write("Client's name: ");
             string name = Console.ReadLine();
 
-            client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
+            Client client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
             if (client == null)
                 Console.WriteLine($"No client found with name {name}");
             else
                 Console.WriteLine(client);
-            return "Go Back";
+            return "GoBack";
         }
 
 
@@ -127,7 +125,7 @@ namespace AdaCredit
             Console.Write("Client's name: ");
             string name = Console.ReadLine();
 
-            client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
+            Client client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
             if (client == null)
             {
                 Console.WriteLine($"No client found with name {name}");
@@ -136,17 +134,17 @@ namespace AdaCredit
             {
                 Console.Write(client);
                 Console.Write("New name: ");
-                string name = Console.ReadLine();
+                string newName = Console.ReadLine();
 
                 Console.Write("New phone number: ");
-                string phoneNumber = Console.ReadLine();
+                string newPhoneNumber = Console.ReadLine();
 
-                if (this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name) != null)
+                if (this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == newName) != null)
                     Console.WriteLine("Client with the specified name already exists");
                 else
                 {
-                    client.Name = name;
-                    client.PhoneNumber = phoneNumber;
+                    client.Name = newName;
+                    client.PhoneNumber = newPhoneNumber;
                     Console.WriteLine("Client edited");
                 }
             }
@@ -159,14 +157,14 @@ namespace AdaCredit
             Console.Write("Client's name: ");
             string name = Console.ReadLine();
 
-            client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
+            Client client = this.DatabaseClient.Clients.FirstOrDefault(x => x.Name == name);
             if (client == null)
             {
                 Console.WriteLine($"No client found with name {name}");
             }
             else
             {
-                client.active = false;
+                client.Active = false;
                 Console.Write("Client deactivated");
             }
             return "GoBack";
@@ -197,7 +195,6 @@ namespace AdaCredit
         public string MainMenu()
         {
             Console.WriteLine("MAIN MENU");
-            Console.WriteLine("Choose a sub menu:");
             Console.WriteLine("1 - Clients");
             Console.WriteLine("2 - Employees");
             Console.WriteLine("3 - Transactions");
@@ -214,6 +211,27 @@ namespace AdaCredit
                 _ => "MainMenu"
             };
             return nextWindow;
+        }
+
+        public string ClientsMenu()
+        {
+            Console.WriteLine("CLIENTS MENU");
+            Console.WriteLine("1 - Create client");
+            Console.WriteLine("2 - Consult client");
+            Console.WriteLine("3 - Edit client");
+            Console.WriteLine("4 - Deactivate client");
+            Console.WriteLine("5 - Main menu");
+            string option = Console.ReadLine();
+            string newWindow = option switch
+            {
+                "1" => "CreateClient",
+                "2" => "ConsultClient",
+                "3" => "EditClient",
+                "4" => "DeactivateClient",
+                "5" => "MainMenu",
+                _ => "ClientsMenu"
+            };
+            return newWindow;
         }
     }
 }
