@@ -34,13 +34,16 @@ namespace AdaCredit
                 next = current switch
                 {
                     "Login" => this.Login(),
-                    "CreateEmployee" => this.CreateEmployee(),
+                    "MainMenu" => this.MainMenu(),
+                    "ClientsMenu" => this.ClientsMenu(),
+                    "EmployeesMenu" => this.EmployeesMenu(),
                     "CreateClient" => this.CreateClient(),
                     "ConsultClient" => this.ConsultClient(),
                     "EditClient" => this.EditClient(),
                     "DeactivateClient" => this.DeactivateClient(),
-                    "MainMenu" => this.MainMenu(),
-                    "ClientsMenu" => this.ClientsMenu(),
+                    "CreateEmployee" => this.CreateEmployee(),
+                    "EditEmployeesPassword" => this.EditEmployeesPassword(),
+                    "DeactivateEmployee" => this.DeactivateEmployee(),
                     "GoBack" => previous,
                     _ => "Exit"
                 };
@@ -79,6 +82,70 @@ namespace AdaCredit
 
             Console.WriteLine("Incorrect credentials");
             return "Login";
+        }
+
+
+        public string MainMenu()
+        {
+            Console.WriteLine("MAIN MENU");
+            Console.WriteLine("1 - Clients");
+            Console.WriteLine("2 - Employees");
+            Console.WriteLine("3 - Transactions");
+            Console.WriteLine("4 - Reports");
+            Console.WriteLine("5 - Exit");
+            string option = Console.ReadLine();
+            string nextWindow = option switch
+            {
+                "1" => "ClientsMenu",
+                "2" => "EmployeesMenu",
+                "3" => "TransactionsMenu",
+                "4" => "ReportsMenu",
+                "5" => "Exit",
+                _ => "MainMenu"
+            };
+            return nextWindow;
+        }
+
+
+        public string ClientsMenu()
+        {
+            Console.WriteLine("CLIENTS MENU");
+            Console.WriteLine("1 - Create client");
+            Console.WriteLine("2 - Consult client");
+            Console.WriteLine("3 - Edit client");
+            Console.WriteLine("4 - Deactivate client");
+            Console.WriteLine("5 - Main menu");
+            string option = Console.ReadLine();
+            string newWindow = option switch
+            {
+                "1" => "CreateClient",
+                "2" => "ConsultClient",
+                "3" => "EditClient",
+                "4" => "DeactivateClient",
+                "5" => "MainMenu",
+                _ => "ClientsMenu"
+            };
+            return newWindow;
+        }
+
+
+        public string EmployeesMenu()
+        {
+            Console.WriteLine("EMPLOYEES MENU");
+            Console.WriteLine("1 - Create employee");
+            Console.WriteLine("2 - Edit employee's password");
+            Console.WriteLine("3 - Deactivate employee");
+            Console.WriteLine("4 - Main menu");
+            string option = Console.ReadLine();
+            string newWindow = option switch
+            {
+                "1" => "CreateEmployee",
+                "2" => "EditEmployeesPassword",
+                "3" => "DeactivateEmployee",
+                "4" => "MainMenu",
+                _ => "ClientsMenu"
+            }
+            return newWindow;
         }
 
 
@@ -152,6 +219,7 @@ namespace AdaCredit
             return "GoBack";
         }
 
+
         public string DeactivateClient()
         {
             Console.WriteLine("DEACTIVATE CLIENT");
@@ -193,65 +261,24 @@ namespace AdaCredit
         }
 
 
-        public string MainMenu()
+        public string EditEmployeesPassword()
         {
-            Console.WriteLine("MAIN MENU");
-            Console.WriteLine("1 - Clients");
-            Console.WriteLine("2 - Employees");
-            Console.WriteLine("3 - Transactions");
-            Console.WriteLine("4 - Reports");
-            Console.WriteLine("5 - Exit");
-            string option = Console.ReadLine();
-            string nextWindow = option switch
-            {
-                "1" => "ClientsMenu",
-                "2" => "EmployeesMenu",
-                "3" => "TransactionsMenu",
-                "4" => "ReportsMenu",
-                "5" => "Exit",
-                _ => "MainMenu"
-            };
-            return nextWindow;
-        }
+            Console.WriteLine("EDIT EMPLOYEES'S PASSWORD");
+            Console.Write("Employee's name: ");
+            string name = Console.ReadLine();
 
-        public string ClientsMenu()
-        {
-            Console.WriteLine("CLIENTS MENU");
-            Console.WriteLine("1 - Create client");
-            Console.WriteLine("2 - Consult client");
-            Console.WriteLine("3 - Edit client");
-            Console.WriteLine("4 - Deactivate client");
-            Console.WriteLine("5 - Main menu");
-            string option = Console.ReadLine();
-            string newWindow = option switch
+            Employee employee = this.DatabaseClient.Employees.FirstOrDefault(
+                    x => x.Name == name);
+            if (employee == null)
             {
-                "1" => "CreateClient",
-                "2" => "ConsultClient",
-                "3" => "EditClient",
-                "4" => "DeactivateClient",
-                "5" => "MainMenu",
-                _ => "ClientsMenu"
-            };
-            return newWindow;
-        }
-
-        public string EmployeesMenu()
-        {
-            Console.WriteLine("EMPLOYEES MENU");
-            Console.WriteLine("1 - Create employee");
-            Console.WriteLine("2 - Edit employee's password");
-            Console.WriteLine("3 - Deactivate employee");
-            Console.WriteLine("4 - Main menu");
-            string option = Console.ReadLine();
-            string newWindow = option switch
-            {
-                "1" => "CreateEmployee",
-                "2" => "EditEmployeesPassword",
-                "3" => "DeactivateEmployee",
-                "4" => "MainMenu",
-                _ => "ClientsMenu"
+                Console.WriteLine("No employee with name {name}");
             }
-            return newWindow;
-        }
+            else
+            {
+                Console.Write("New password: ");
+                string password = Console.ReadLine();
+                employee.Password = password;
+            }
+            return "GoBack";
     }
 }
