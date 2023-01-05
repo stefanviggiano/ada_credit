@@ -37,6 +37,7 @@ namespace AdaCredit
                     "MainMenu" => this.MainMenu(),
                     "ClientsMenu" => this.ClientsMenu(),
                     "EmployeesMenu" => this.EmployeesMenu(),
+                    "ReportsMenu" => this.ReportsMenu(),
                     "CreateClient" => this.CreateClient(),
                     "ConsultClient" => this.ConsultClient(),
                     "EditClient" => this.EditClient(),
@@ -44,6 +45,10 @@ namespace AdaCredit
                     "CreateEmployee" => this.CreateEmployee(),
                     "EditEmployeesPassword" => this.EditEmployeesPassword(),
                     "DeactivateEmployee" => this.DeactivateEmployee(),
+                    "ReportActiveClients" => this.ReportActiveClients(),
+                    "ReportInactiveClients" => this.ReportInactiveClients(),
+                    "ReportActiveEmployees" => this.ReportActiveEmployees(),
+                    "ReportFailedTransactions" => this.ReportFailedTransactions(),
                     "GoBack" => previous,
                     _ => "Exit"
                 };
@@ -311,5 +316,26 @@ namespace AdaCredit
             }
             return "GoBack";
         }
+
+
+        public ReportsMenu()
+        {
+            Console.WriteLine("REPORTS MENU");
+            Console.WriteLine("1 - Active clients");
+            Console.WriteLine("2 - Inactive clients");
+            Console.WriteLine("3 - Active employees");
+            Console.WriteLine("4 - Failed transactions");
+            Console.WriteLine("5 - Main menu");
+            string option = Console.Readline();
+            string newWindow = option switch
+            {
+                "1" => "ReportActiveClients",
+                "2" => "ReportInactiveClients",
+                "3" => "ReportActiveEmployees",
+                "4" => "ReportFailedTransactions",
+                "5" => "MainMenu",
+                _ => "ReportsMenu"
+            }
+            return newWindow;
     }
 }
