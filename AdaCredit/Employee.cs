@@ -16,6 +16,16 @@ namespace AdaCredit
             this.Active = true;
         }
 
+        public Employee(string Name, string Username, string Password,
+                DateTime LastLogin, bool Active)
+        {
+            this.Name = Name;
+            this.Username = Username;
+            this.Password = Password;
+            this.LastLogin = LastLogin;
+            this.Active = Active;
+        }
+
         public bool Login(string username, string password)
         {
             if (username == this.Username && password == this.Password)
