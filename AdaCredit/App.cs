@@ -62,7 +62,8 @@ namespace AdaCredit
             Console.Write("Password: ");
             string password = Console.ReadLine();
 
-            List<Employee> employees = this.DatabaseClient.Employees;
+            List<Employee> employees = this.DatabaseClient.Employees(
+                    employee => employee.Active);
 
             if (employees.Count == 0 && username == "user"
                 && password == "pass")
@@ -231,6 +232,25 @@ namespace AdaCredit
                 "5" => "MainMenu",
                 _ => "ClientsMenu"
             };
+            return newWindow;
+        }
+
+        public string EmployeesMenu()
+        {
+            Console.WriteLine("EMPLOYEES MENU");
+            Console.WriteLine("1 - Create employee");
+            Console.WriteLine("2 - Edit employee's password");
+            Console.WriteLine("3 - Deactivate employee");
+            Console.WriteLine("4 - Main menu");
+            string option = Console.ReadLine();
+            string newWindow = option switch
+            {
+                "1" => "CreateEmployee",
+                "2" => "EditEmployeesPassword",
+                "3" => "DeactivateEmployee",
+                "4" => "MainMenu",
+                _ => "ClientsMenu"
+            }
             return newWindow;
         }
     }
