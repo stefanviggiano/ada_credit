@@ -156,7 +156,7 @@ namespace AdaCredit
         }
 
 
-        public ReportsMenu()
+        public string ReportsMenu()
         {
             Console.WriteLine("REPORTS MENU");
             Console.WriteLine("1 - Active clients");
@@ -164,7 +164,7 @@ namespace AdaCredit
             Console.WriteLine("3 - Active employees");
             Console.WriteLine("4 - Failed transactions");
             Console.WriteLine("5 - Main menu");
-            string option = Console.Readline();
+            string option = Console.ReadLine();
             string newWindow = option switch
             {
                 "1" => "ReportActiveClients",
@@ -173,7 +173,7 @@ namespace AdaCredit
                 "4" => "ReportFailedTransactions",
                 "5" => "MainMenu",
                 _ => "ReportsMenu"
-            }
+            };
             return newWindow;
         }
 
@@ -339,6 +339,7 @@ namespace AdaCredit
             return "GoBack";
         }
 
+
         public string ReportActiveClients()
         {
             var clients = this.DatabaseClient.Clients.Where(
@@ -348,12 +349,29 @@ namespace AdaCredit
             return "GoBack";
         }
 
+
         public string ReportInactiveClients()
         {
-            var clients = this.DatabaseClient.Clients.Where(client =
-                    !client.Active);
+            var clients = this.DatabaseClient.Clients.Where(
+                    client => !client.Active);
             foreach (Client client in clients)
                 Console.WriteLine(client);
+            return "GoBack";
+        }
+
+
+        public string ReportActiveEmployees()
+        {
+            var employees = this.DatabaseClient.Employees.Where(
+                    employee => employee.Active);
+            foreach (Employee employee in employees)
+                Console.WriteLine(employee);
+            return "GoBack";
+        }
+
+
+        public string ReportFailedTransactions()
+        {
             return "GoBack";
         }
     }

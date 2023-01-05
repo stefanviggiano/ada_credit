@@ -35,5 +35,10 @@ namespace AdaCredit
             }
             return false;
         }
+
+        public override string ToString()
+        {
+            return $"Employee(Name={this.Name}, Username={this.Username}, Password={this.Password}, LastLogin={this.LastLogin}, Active={this.Active})";
+        }
     }
 }

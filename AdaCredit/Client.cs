@@ -21,7 +21,7 @@ namespace AdaCredit
         }
 
         public Client(string Name, string PhoneNumber, string AccountNumber,
-                string AgencyNumber, bool Active, decimal Balance);
+                string AgencyNumber, bool Active, decimal Balance)
         {
             this.Name = Name;
             this.PhoneNumber = PhoneNumber;
@@ -33,7 +33,7 @@ namespace AdaCredit
 
         public override string ToString()
         {
-            return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber})";
+            return $"Client(Name={this.Name}, PhoneNumber={this.PhoneNumber}, AccountNumber={this.AccountNumber}, AgencyNumber={this.AgencyNumber}, Active={this.Active})";
         }
     }
 }
