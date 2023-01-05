@@ -256,9 +256,16 @@ namespace AdaCredit
             string password = Console.ReadLine();
 
             var employee = new Employee(name, username, password);
-            this.DatabaseClient.Employees.Add(employee);
-            Console.WriteLine("Employee created");
-
+            if (this.DatabaseClient.Employees.FirstOrDefault(
+                        x => x.Username == username) != null)
+            {
+                Console.WriteLine($"There is already an employee with the username {username}");
+            }
+            else
+            {
+                this.DatabaseClient.Employees.Add(employee);
+                Console.WriteLine("Employee created");
+            }
             return "GoBack";
         }
 
@@ -266,14 +273,14 @@ namespace AdaCredit
         public string EditEmployeesPassword()
         {
             Console.WriteLine("EDIT EMPLOYEES'S PASSWORD");
-            Console.Write("Employee's name: ");
-            string name = Console.ReadLine();
+            Console.Write("Employee's username: ");
+            string username = Console.ReadLine();
 
             Employee employee = this.DatabaseClient.Employees.FirstOrDefault(
-                    x => x.Name == name);
+                    x => x.Username == username);
             if (employee == null)
             {
-                Console.WriteLine("No employee with name {name}");
+                Console.WriteLine("No employee with username {username}");
             }
             else
             {
