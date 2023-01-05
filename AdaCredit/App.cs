@@ -65,8 +65,10 @@ namespace AdaCredit
             Console.Write("Password: ");
             string password = Console.ReadLine();
 
-            List<Employee> employees = this.DatabaseClient.Employees(
-                    employee => employee.Active);
+            List<Employee> employees = this.DatabaseClient.Employees.Where(
+                    employee => employee.Active == true).ToList();
+            foreach (var e in employees)
+                Console.WriteLine($"{e.Name}, {e.Active}");
 
             if (employees.Count == 0 && username == "user"
                 && password == "pass")
@@ -144,7 +146,7 @@ namespace AdaCredit
                 "3" => "DeactivateEmployee",
                 "4" => "MainMenu",
                 _ => "ClientsMenu"
-            }
+            };
             return newWindow;
         }
 
@@ -280,5 +282,27 @@ namespace AdaCredit
                 employee.Password = password;
             }
             return "GoBack";
+        }
+
+
+        public string DeactivateEmployee()
+        {
+            Console.WriteLine("DEACTIVATE EMPLOYEE");
+            Console.Write("Employee's name: ");
+            string name = Console.ReadLine();
+
+            Employee employee = this.DatabaseClient.Employees.Where(
+                    x => x.Active).FirstOrDefault(
+                    x => x.Name == name);
+            if (employee == null)
+            {
+                Console.WriteLine("No active employee with name {name}");
+            }
+            else
+            {
+                employee.Active = false;
+            }
+            return "GoBack";
+        }
     }
 }
