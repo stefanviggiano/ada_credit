@@ -71,7 +71,7 @@ namespace AdaCredit
             string password = Console.ReadLine();
 
             List<Employee> employees = this.DatabaseClient.Employees.Where(
-                    employee => employee.Active == true).ToList();
+                    employee => employee.Active).ToList();
             foreach (var e in employees)
                 Console.WriteLine($"{e.Name}, {e.Active}");
 
@@ -152,6 +152,28 @@ namespace AdaCredit
                 "4" => "MainMenu",
                 _ => "ClientsMenu"
             };
+            return newWindow;
+        }
+
+
+        public ReportsMenu()
+        {
+            Console.WriteLine("REPORTS MENU");
+            Console.WriteLine("1 - Active clients");
+            Console.WriteLine("2 - Inactive clients");
+            Console.WriteLine("3 - Active employees");
+            Console.WriteLine("4 - Failed transactions");
+            Console.WriteLine("5 - Main menu");
+            string option = Console.Readline();
+            string newWindow = option switch
+            {
+                "1" => "ReportActiveClients",
+                "2" => "ReportInactiveClients",
+                "3" => "ReportActiveEmployees",
+                "4" => "ReportFailedTransactions",
+                "5" => "MainMenu",
+                _ => "ReportsMenu"
+            }
             return newWindow;
         }
 
@@ -317,25 +339,22 @@ namespace AdaCredit
             return "GoBack";
         }
 
-
-        public ReportsMenu()
+        public string ReportActiveClients()
         {
-            Console.WriteLine("REPORTS MENU");
-            Console.WriteLine("1 - Active clients");
-            Console.WriteLine("2 - Inactive clients");
-            Console.WriteLine("3 - Active employees");
-            Console.WriteLine("4 - Failed transactions");
-            Console.WriteLine("5 - Main menu");
-            string option = Console.Readline();
-            string newWindow = option switch
-            {
-                "1" => "ReportActiveClients",
-                "2" => "ReportInactiveClients",
-                "3" => "ReportActiveEmployees",
-                "4" => "ReportFailedTransactions",
-                "5" => "MainMenu",
-                _ => "ReportsMenu"
-            }
-            return newWindow;
+            var clients = this.DatabaseClient.Clients.Where(
+                    client => client.Active);
+            foreach (Client client in clients)
+                Console.WriteLine(client);
+            return "GoBack";
+        }
+
+        public string ReportInactiveClients()
+        {
+            var clients = this.DatabaseClient.Clients.Where(client =
+                    !client.Active);
+            foreach (Client client in clients)
+                Console.WriteLine(client);
+            return "GoBack";
+        }
     }
 }
