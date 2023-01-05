@@ -126,19 +126,26 @@ namespace AdaCredit
         {
         }
 
+        private static List<Transaction> LoadTransactionsFile(string filename)
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = false,
+            };
+            using var reader new StreamReader(file);
+            using var csv = new CsvReader(reader, config);
+            return csv.GetRecords<Transaction>();
+        }
+
+
         private List<Transaction> LoadPendingTransactions()
         {
-
             var transactions = new List<Transaction>();
 
             var files = Directory.GetFiles(this.PendingTransactionsDirPath, "*.csv");
 
             foreach (string file in files)
-            {
-                using var reader new StreamReader(file);
-                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-                transactions.AddRange(csv.GetRecords<Transaction>());
-            }
+                transactions.AddRange(this.LoadTransactionFile(file);
 
             return transactions;
         }
@@ -151,11 +158,7 @@ namespace AdaCredit
             var files = Directory.GetFiles(this.CompleteTransactionsDirPath, "*.csv");
 
             foreach (string file in files)
-            {
-                using var reader new StreamReader(file);
-                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-                transactions.AddRange(csv.GetRecords<Transaction>());
-            }
+                transactions.AddRange(this.LoadTransactionFile(file);
 
             return transactions;
         }
@@ -168,11 +171,7 @@ namespace AdaCredit
             var files = Directory.GetFiles(this.FailedTransactionsDirPath, "*.csv");
 
             foreach (string file in files)
-            {
-                using var reader new StreamReader(file);
-                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-                transactions.AddRange(csv.GetRecords<Transaction>());
-            }
+                transactions.AddRange(this.LoadTransactionFile(file);
 
             return transactions;
         }

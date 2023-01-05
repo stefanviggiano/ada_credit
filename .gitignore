@@ -8,5 +8,6 @@
 !AdaCredit/DatabaseClient.cs
 !AdaCredit/Employee.cs
 !AdaCredit/Makefile
+!AdaCredit/Transaction.cs
 !AdaCredit/Utils.cs
 !README.txt
