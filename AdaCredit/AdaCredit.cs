@@ -12,9 +12,7 @@ namespace AdaCredit
     {
         public static void Main()
         {
-
-            string desktopPath = Environment.GetFolderPath(
-                    Environment.SpecialFolder.Desktop);
+            string desktopPath = Environment.GetFolderPath( Environment.SpecialFolder.Desktop);
             var baseExecDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             string DatabaseDirPath = baseExecDir.Parent.Parent.Parent.FullName;
 

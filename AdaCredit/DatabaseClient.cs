@@ -12,6 +12,14 @@ namespace AdaCredit
         private string EmployeesFilePath;
         private string TransactionsDirPath;
 
+        private string PendingTransactionsDirPath
+        {
+            get
+            {
+                return Path.Combine(this.TransactionsDirPath, "Pending");
+            }
+        }
+
         private string CompletedTransactionsDirPath
         {
             get
@@ -28,13 +36,41 @@ namespace AdaCredit
             }
         }
 
-        private string PendingTransactionsDirPath
+
+        private string pendingTransactions?;
+        public string PendingTransactions
         {
             get
             {
-                return Path.Combine(this.TransactionsDirPath, "Pending");
+                if (this.pendingTransactions == null)
+                    this.pendingTransactions = this.LoadPendingTransactions();
+                return this.pendingTransactions;
             }
         }
+
+
+        private string completedTransactions?;
+        public string CompletedTransactions
+        {
+            get
+            {
+                if (this.completedTransactions == null)
+                    this.completedTransactions = this.LoadCompletedTransactions();
+                return this.completedTransactions;
+            }
+        }
+
+        private string failedTransactions?;
+        public string FailedTransactions
+        {
+            get
+            {
+                if (this.failedTransactions == null)
+                    this.failedTransactions = this.LoadFailedTransactions();
+                return this.failedTransactions;
+            }
+        }
+                
 
         private List<Client>? clients;
         public List<Client> Clients
@@ -59,7 +95,7 @@ namespace AdaCredit
         }
 
         public DatabaseClient(string clientsFilePath, string employeesFilePath,
-                string transactionsDirPath);
+                string transactionsDirPath)
         {
             this.ClientsFilePath = clientsFilePath;
             this.EmployeesFilePath = employeesFilePath;
@@ -85,6 +121,62 @@ namespace AdaCredit
             using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
             return csv.GetRecords<Employee>().ToList();
         }
+
+        private List<Transaction> LoadTransactions()
+        {
+        }
+
+        private List<Transaction> LoadPendingTransactions()
+        {
+
+            var transactions = new List<Transaction>();
+
+            var files = Directory.GetFiles(this.PendingTransactionsDirPath, "*.csv");
+
+            foreach (string file in files)
+            {
+                using var reader new StreamReader(file);
+                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                transactions.AddRange(csv.GetRecords<Transaction>());
+            }
+
+            return transactions;
+        }
+
+
+        private List<Transaction> LoadCompletedTransactions()
+        {
+            var transactions = new List<Transaction>();
+
+            var files = Directory.GetFiles(this.CompleteTransactionsDirPath, "*.csv");
+
+            foreach (string file in files)
+            {
+                using var reader new StreamReader(file);
+                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                transactions.AddRange(csv.GetRecords<Transaction>());
+            }
+
+            return transactions;
+        }
+
+
+        private List<Transaction> LoadFailedTransactions()
+        {
+            var transactions = new List<Transaction>();
+
+            var files = Directory.GetFiles(this.FailedTransactionsDirPath, "*.csv");
+
+            foreach (string file in files)
+            {
+                using var reader new StreamReader(file);
+                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+                transactions.AddRange(csv.GetRecords<Transaction>());
+            }
+
+            return transactions;
+        }
+
 
         public void SaveClients()
         {

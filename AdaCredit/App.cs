@@ -72,8 +72,6 @@ namespace AdaCredit
 
             List<Employee> employees = this.DatabaseClient.Employees.Where(
                     employee => employee.Active).ToList();
-            foreach (var e in employees)
-                Console.WriteLine($"{e.Name}, {e.Active}");
 
             if (employees.Count == 0 && username == "user"
                 && password == "pass")

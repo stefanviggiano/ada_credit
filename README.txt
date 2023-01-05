@@ -1,8 +1,7 @@
 Ada Credit
 ==========
 
-This is the final project of the first module of the course C# & .NET done by
-Ada.
+This is the final project of the first module of the course C# & .NET by Ada.
 Student: Stefan Wiggers Viggiano
 
 
