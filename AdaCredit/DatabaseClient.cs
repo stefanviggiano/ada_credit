@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 
 namespace AdaCredit
@@ -37,8 +38,8 @@ namespace AdaCredit
         }
 
 
-        private string pendingTransactions?;
-        public string PendingTransactions
+        private List<Transaction>? pendingTransactions;
+        public List<Transaction> PendingTransactions
         {
             get
             {
@@ -49,8 +50,8 @@ namespace AdaCredit
         }
 
 
-        private string completedTransactions?;
-        public string CompletedTransactions
+        private List<Transaction>? completedTransactions;
+        public List<Transaction> CompletedTransactions
         {
             get
             {
@@ -60,8 +61,8 @@ namespace AdaCredit
             }
         }
 
-        private string failedTransactions?;
-        public string FailedTransactions
+        private List<Transaction>? failedTransactions;
+        public List<Transaction> FailedTransactions
         {
             get
             {
@@ -122,19 +123,23 @@ namespace AdaCredit
             return csv.GetRecords<Employee>().ToList();
         }
 
-        private List<Transaction> LoadTransactions()
-        {
-        }
 
-        private static List<Transaction> LoadTransactionsFile(string filename)
+        private static List<Transaction> LoadTransactionsFile(string path)
         {
+            string filename = Path.GetFileName(filename).Split(".")[0];
+            string bankName = filename.Split("-")[0];
+            string stringDate = filename.Split("-")[1];
+            var date = new DateTime(stringDate[0:4], stringDate[4:6], stringDate[6:8]);
+
+
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = false,
             };
-            using var reader new StreamReader(file);
-            using var csv = new CsvReader(reader, config);
-            return csv.GetRecords<Transaction>();
+            using var reader = new StreamReader(path);
+            List<Transaction> transactions =
+                reader.ReadToEnd().Split().Select(x => new Transaction(x, bankName, date)).ToList();
+            return transactions;
         }
 
 
@@ -145,7 +150,10 @@ namespace AdaCredit
             var files = Directory.GetFiles(this.PendingTransactionsDirPath, "*.csv");
 
             foreach (string file in files)
-                transactions.AddRange(this.LoadTransactionFile(file);
+            {
+                transactions.AddRange(LoadTransactionsFile(file));
+                File.Delete(file);
+            }
 
             return transactions;
         }
@@ -155,10 +163,10 @@ namespace AdaCredit
         {
             var transactions = new List<Transaction>();
 
-            var files = Directory.GetFiles(this.CompleteTransactionsDirPath, "*.csv");
+            var files = Directory.GetFiles(this.CompletedTransactionsDirPath, "*.csv");
 
             foreach (string file in files)
-                transactions.AddRange(this.LoadTransactionFile(file);
+                transactions.AddRange(LoadTransactionsFile(file));
 
             return transactions;
         }
@@ -171,7 +179,7 @@ namespace AdaCredit
             var files = Directory.GetFiles(this.FailedTransactionsDirPath, "*.csv");
 
             foreach (string file in files)
-                transactions.AddRange(this.LoadTransactionFile(file);
+                transactions.AddRange(LoadTransactionsFile(file));
 
             return transactions;
         }
@@ -197,10 +205,36 @@ namespace AdaCredit
             }
         }
 
+
+        public void SaveTransactions()
+        {
+            this.SaveCompletedTransactions();
+            this.SaveFailedTransactions();
+        }
+
+        
+        public void SaveCompletedTransactions()
+        {
+            if (this.completeTransactions != null)
+                return;
+            return;
+        }
+
+
+        public void SaveFailedTransactions()
+        {
+            if (this.failedTransactions != null)
+                return;
+            return;
+        }
+
+
+
         public void Save()
         {
             this.SaveClients();
             this.SaveEmployees();
+            this.SaveTransactions();
         }
     }
 }
