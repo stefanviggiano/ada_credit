@@ -228,7 +228,9 @@ namespace AdaCredit
         public void SaveCompletedTransactions()
         {
             if (this.completedTransactions == null)
+            {
                 return;
+            }
 
             var transactions = this.CompletedTransactions;
             var dates = transactions.Select(x => x.date).Distinct().ToList();
