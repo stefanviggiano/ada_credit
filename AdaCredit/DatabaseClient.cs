@@ -48,6 +48,11 @@ namespace AdaCredit
                     this.pendingTransactions = this.LoadPendingTransactions();
                 return this.pendingTransactions;
             }
+
+            set
+            {
+                this.pendingTransactions = value;
+            }
         }
 
 
@@ -128,9 +133,12 @@ namespace AdaCredit
 
         private static List<Transaction> LoadTransactionsFile(string path)
         {
+            
             string filename = Path.GetFileName(path).Split(".")[0];
             string bankName = filename.Split("-")[0];
             string stringDate = filename.Split("-")[1];
+
+
             var date = new DateTime(
                     int.Parse(stringDate.Substring(0, 4)),
                     int.Parse(stringDate.Substring(4, 2)),
@@ -142,8 +150,7 @@ namespace AdaCredit
                 HasHeaderRecord = false,
             };
             using var reader = new StreamReader(path);
-            List<Transaction> transactions =
-                reader.ReadToEnd().Split().Select(x => new Transaction(x, bankName, date)).ToList();
+            List<Transaction> transactions = reader.ReadToEnd().Split().Where(x=>x!="").Select(x => new Transaction(x, bankName, date)).ToList();
             return transactions;
         }
 

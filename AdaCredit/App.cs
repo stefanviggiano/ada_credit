@@ -49,6 +49,7 @@ namespace AdaCredit
                     "ReportInactiveClients" => this.ReportInactiveClients(),
                     "ReportActiveEmployees" => this.ReportActiveEmployees(),
                     "ReportFailedTransactions" => this.ReportFailedTransactions(),
+                    "ProcessTransactions" => this.ProcessTransactions(),
                     "GoBack" => previous,
                     _ => "Exit"
                 };
@@ -95,7 +96,7 @@ namespace AdaCredit
             Console.WriteLine("MAIN MENU");
             Console.WriteLine("1 - Clients");
             Console.WriteLine("2 - Employees");
-            Console.WriteLine("3 - Transactions");
+            Console.WriteLine("3 - Process transactions");
             Console.WriteLine("4 - Reports");
             Console.WriteLine("5 - Exit");
             string option = Console.ReadLine();
@@ -103,7 +104,7 @@ namespace AdaCredit
             {
                 "1" => "ClientsMenu",
                 "2" => "EmployeesMenu",
-                "3" => "TransactionsMenu",
+                "3" => "ProcessTransactions",
                 "4" => "ReportsMenu",
                 "5" => "Exit",
                 _ => "MainMenu"
@@ -370,6 +371,21 @@ namespace AdaCredit
 
         public string ReportFailedTransactions()
         {
+            return "GoBack";
+        }
+
+        public string ProcessTransactions()
+        {
+            foreach (Transaction transaction in this.DatabaseClient.PendingTransactions)
+            {
+                if (transaction.Process(this.DatabaseClient))
+                    this.DatabaseClient.CompletedTransactions.Add(transaction);
+                else
+                    this.DatabaseClient.FailedTransactions.Add(transaction);
+
+            }
+            this.DatabaseClient.PendingTransactions = new List<Transaction>();
+            
             return "GoBack";
         }
     }
