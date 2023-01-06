@@ -12,6 +12,7 @@ namespace AdaCredit
         private string ClientsFilePath;
         private string EmployeesFilePath;
         private string TransactionsDirPath;
+        public string BankNumber;
 
         private string PendingTransactionsDirPath
         {
@@ -96,11 +97,12 @@ namespace AdaCredit
         }
 
         public DatabaseClient(string clientsFilePath, string employeesFilePath,
-                string transactionsDirPath)
+                string transactionsDirPath, string bankNumber);
         {
             this.ClientsFilePath = clientsFilePath;
             this.EmployeesFilePath = employeesFilePath;
             this.TransactionsDirPath = transactionsDirPath;
+            this.BankNumber = bankNumber;
         }
 
         private List<Client> LoadClients()
@@ -232,8 +234,7 @@ namespace AdaCredit
                     var trans = transactions.Where(x => x.date == date).Where(
                             x => x.bankName == name).ToList();
 
-                    string path =
-                        Path.Combine(this.CompletedTransactionsDirPath, $"{name}-{date.Year}{date.Month}{date.Day}");
+                    string path = Path.Combine(this.CompletedTransactionsDirPath, $"{name}-{date.Year}{date.Month}{date.Day}.csv");
 
                     SaveTransactionList(path, trans);
                 }
@@ -257,8 +258,7 @@ namespace AdaCredit
                     var trans = transactions.Where(x => x.date == date).Where(
                             x => x.bankName == name).ToList();
 
-                    string path =
-                        Path.Combine(this.FailedTransactionsDirPath, $"{name}-{date.Year}{date.Month}{date.Day}");
+                    string path = Path.Combine(this.FailedTransactionsDirPath, $"{name}-{date.Year}{date.Month}{date.Day}.csv");
 
                     SaveTransactionList(path, trans);
                 }
@@ -279,6 +279,7 @@ namespace AdaCredit
             List<string> stringTransactions = transactions.Select(x => x.Serialize()).ToList();
             csv.WriteRecords(stringTransactions);
         }
+
 
         public void Save()
         {

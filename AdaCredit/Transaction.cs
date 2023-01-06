@@ -60,6 +60,59 @@ namespace AdaCredit
         }
 
 
+        public bool Process(DatabaseClient databaseClient)
+        {
+            if (this.type == "TEF")
+                return this.ProcessTEF(databaseClient);
+            else if (this.type == "DOC")
+                return this.ProcessDOC(databaseClient);
+            else if (this.type == "TED")
+                return this.ProcessTED(databaseClient);
+        }
+
+        public bool ProcessTEF(DatabaseClient databaseClient)
+        {
+            bool debit = this.ProcessTEFDebit(databaseClient);
+            bool credit = this.ProcessTEFCredit(databaseClient);
+
+            return (debit && credit);
+        }
+
+
+        public bool ProcessTEFDebit(DatabaseClient databaseClient)
+        {
+            if (this.OriginBank != databaseClient.BankNumber)
+                return true;
+
+            Client client = databaseClient.Clients.FirstOrDefault(x =>
+                    x.accountNumber == this.OriginAccount);
+
+            if (client == null)
+                return false;
+
+            if (client.Balance < this.Value)
+                return false;
+
+            client.Balance -= this.Value;
+            return true;
+        }
+
+
+        public bool ProcessTEFCredit(DatabaseClient databaseClient)
+        {
+            if (this.DestinationAccount != databaseClient.BankNumber)
+                return true;
+
+            Client client = databaseClient.Clients.FirstOrDefault(x =>
+                    x.accountNumber == this.DestinationAccount);
+
+            if (client == null)
+                return false;
+
+            client.Balance += this.Value;
+            return true;
+        }
+
 
     }
 }

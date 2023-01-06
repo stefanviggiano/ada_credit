@@ -16,10 +16,12 @@ namespace AdaCredit
             var baseExecDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             string DatabaseDirPath = baseExecDir.Parent.Parent.Parent.FullName;
 
+            string bankNumber = "777";
             var databaseClient = new DatabaseClient(
                     Path.Combine(DatabaseDirPath, "clients.csv"),
                     Path.Combine(DatabaseDirPath, "employees.csv"),
-                    Path.Combine(desktopPath, "Transactions"));
+                    Path.Combine(desktopPath, "Transactions"),
+                    bankNumber);
 
             var agencyNumber = "0001";
             var app = new App(databaseClient, agencyNumber);
