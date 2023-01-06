@@ -97,7 +97,7 @@ namespace AdaCredit
         }
 
         public DatabaseClient(string clientsFilePath, string employeesFilePath,
-                string transactionsDirPath, string bankNumber);
+                string transactionsDirPath, string bankNumber)
         {
             this.ClientsFilePath = clientsFilePath;
             this.EmployeesFilePath = employeesFilePath;

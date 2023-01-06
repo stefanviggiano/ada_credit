@@ -62,12 +62,13 @@ namespace AdaCredit
 
         public bool Process(DatabaseClient databaseClient)
         {
-            if (this.type == "TEF")
+            if (this.Type == "TEF")
                 return this.ProcessTEF(databaseClient);
-            else if (this.type == "DOC")
+            else if (this.Type == "DOC")
                 return this.ProcessDOC(databaseClient);
-            else if (this.type == "TED")
+            else if (this.Type == "TED")
                 return this.ProcessTED(databaseClient);
+            return false;
         }
 
         public bool ProcessTEF(DatabaseClient databaseClient)
@@ -88,7 +89,7 @@ namespace AdaCredit
                 return true;
 
             Client client = databaseClient.Clients.FirstOrDefault(x =>
-                    x.accountNumber == this.OriginAccount);
+                    x.AccountNumber == this.OriginAccount);
 
             if (client == null)
                 return false;
@@ -107,7 +108,7 @@ namespace AdaCredit
                 return true;
 
             Client client = databaseClient.Clients.FirstOrDefault(x =>
-                    x.accountNumber == this.DestinationAccount);
+                    x.AccountNumber == this.DestinationAccount);
 
             if (client == null)
                 return false;
@@ -116,7 +117,7 @@ namespace AdaCredit
             return true;
         }
 
-/ =============================================================================
+
         public bool ProcessDOC(DatabaseClient databaseClient)
         {
             bool debit = this.ProcessDOCDebit(databaseClient);
@@ -132,20 +133,20 @@ namespace AdaCredit
                 return true;
 
             Client client = databaseClient.Clients.FirstOrDefault(x =>
-                    x.accountNumber == this.OriginAccount);
+                    x.AccountNumber == this.OriginAccount);
 
             if (client == null)
                 return false;
 
             decimal tax;
-            if (this.date < DateTime(2022, 11, 30))
+            if (this.date < new DateTime(2022, 11, 30))
             {
                 tax = 0;
             }
             else
             {
-                tax = this.Value * 0.01;
-                if tax > 5
+                tax = this.Value * 0.01M;
+                if (tax > 5)
                     tax = 5;
                 tax += 1;
             }
@@ -165,7 +166,7 @@ namespace AdaCredit
                 return true;
 
             Client client = databaseClient.Clients.FirstOrDefault(x =>
-                    x.accountNumber == this.DestinationAccount);
+                    x.AccountNumber == this.DestinationAccount);
 
             if (client == null)
                 return false;
@@ -175,7 +176,55 @@ namespace AdaCredit
         }
 
 
+        public bool ProcessTED(DatabaseClient databaseClient)
+        {
+            bool debit = this.ProcessTEDDebit(databaseClient);
+            bool credit = this.ProcessTEDCredit(databaseClient);
 
+            return (debit && credit);
+        }
+
+
+        public bool ProcessTEDDebit(DatabaseClient databaseClient)
+        {
+            if (this.OriginBank != databaseClient.BankNumber)
+                return true;
+
+            Client client = databaseClient.Clients.FirstOrDefault(x =>
+                    x.AccountNumber == this.OriginAccount);
+
+            if (client == null)
+                return false;
+
+            decimal tax;
+            if (this.date < new DateTime(2022, 11, 30))
+                tax = 0;
+            else
+                tax = 5;
+
+            decimal value_ = this.Value + tax;
+            if (client.Balance < value_)
+                return false;
+
+            client.Balance -= value_;
+            return true;
+        }
+
+
+        public bool ProcessTEDCredit(DatabaseClient databaseClient)
+        {
+            if (this.DestinationAccount != databaseClient.BankNumber)
+                return true;
+
+            Client client = databaseClient.Clients.FirstOrDefault(x =>
+                    x.AccountNumber == this.DestinationAccount);
+
+            if (client == null)
+                return false;
+
+            client.Balance += this.Value;
+            return true;
+        }
 
     }
 }
