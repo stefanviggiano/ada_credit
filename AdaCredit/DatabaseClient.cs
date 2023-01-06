@@ -126,10 +126,13 @@ namespace AdaCredit
 
         private static List<Transaction> LoadTransactionsFile(string path)
         {
-            string filename = Path.GetFileName(filename).Split(".")[0];
+            string filename = Path.GetFileName(path).Split(".")[0];
             string bankName = filename.Split("-")[0];
             string stringDate = filename.Split("-")[1];
-            var date = new DateTime(stringDate[0:4], stringDate[4:6], stringDate[6:8]);
+            var date = new DateTime(
+                    int.Parse(stringDate.Substring(0, 4)),
+                    int.Parse(stringDate.Substring(4, 2)),
+                    int.Parse(stringDate.Substring(6,2)));
 
 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -215,20 +218,67 @@ namespace AdaCredit
         
         public void SaveCompletedTransactions()
         {
-            if (this.completeTransactions != null)
+            if (this.completedTransactions == null)
                 return;
-            return;
+
+            var transactions = this.CompletedTransactions;
+            var dates = transactions.Select(x => x.date).Distinct().ToList();
+            var bankNames = transactions.Select(x => x.bankName).Distinct().ToList();
+
+            foreach (DateTime date in dates)
+            {
+                foreach (string name in bankNames)
+                {
+                    var trans = transactions.Where(x => x.date == date).Where(
+                            x => x.bankName == name).ToList();
+
+                    string path =
+                        Path.Combine(this.CompletedTransactionsDirPath, $"{name}-{date.Year}{date.Month}{date.Day}");
+
+                    SaveTransactionList(path, trans);
+                }
+            }
         }
 
 
         public void SaveFailedTransactions()
         {
-            if (this.failedTransactions != null)
+            if (this.failedTransactions == null)
                 return;
-            return;
+
+            var transactions = this.FailedTransactions;
+            var dates = transactions.Select(x => x.date).Distinct().ToList();
+            var bankNames = transactions.Select(x => x.bankName).Distinct().ToList();
+
+            foreach (DateTime date in dates)
+            {
+                foreach (string name in bankNames)
+                {
+                    var trans = transactions.Where(x => x.date == date).Where(
+                            x => x.bankName == name).ToList();
+
+                    string path =
+                        Path.Combine(this.FailedTransactionsDirPath, $"{name}-{date.Year}{date.Month}{date.Day}");
+
+                    SaveTransactionList(path, trans);
+                }
+            }
+
         }
 
 
+        public static void SaveTransactionList(string path, List<Transaction> transactions)
+        {
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = false,
+            };
+            using var writer = new StreamWriter(path);
+            using var csv = new CsvWriter(writer, config);
+            List<string> stringTransactions = transactions.Select(x => x.Serialize()).ToList();
+            csv.WriteRecords(stringTransactions);
+        }
 
         public void Save()
         {

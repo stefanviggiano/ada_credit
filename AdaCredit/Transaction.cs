@@ -13,13 +13,13 @@ namespace AdaCredit
         public string Type { get; set; }
         public decimal Value { get; set; }
 
-        private string bankName;
-        private DateTime date;
+        public string bankName;
+        public DateTime date;
 
         public Transaction(string OriginBank, string OriginAgency, 
                 string OriginAccount, string DestinationBank,
                 string DestinationAgency, string DestinationAccount,
-                string Type, decimal Value, string bankName, DateTime date);
+                string Type, decimal Value, string bankName, DateTime date)
         {
             this.OriginBank = OriginBank;
             this.OriginAgency = OriginAgency;
